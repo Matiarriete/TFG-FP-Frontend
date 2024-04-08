@@ -17,7 +17,7 @@ function App() {
         if (!response.ok) {
           throw new Error('Error al obtener las tareas');
         }
-        const data = await response.json();
+        const data = await response.json(); 
         setTasks(data);
       } catch (error) {
         setError(error);
