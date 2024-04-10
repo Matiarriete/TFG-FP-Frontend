@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {Button} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.css';
 
-function TaskList({ tasks, onDeleteTask }) {
+function TaskList({ tasks, onDeleteTask, onUpdateTask }) {
 
   return (
     <table>
@@ -22,7 +22,12 @@ function TaskList({ tasks, onDeleteTask }) {
             <td>{task.description}</td>
             <td>{task.priority}</td>
             <td>{task.user.usuario}</td>
-            <td><Button onClick={() => onDeleteTask(task.idTask)}>Eliminar</Button></td>
+            <td>
+              <div>
+                <Button className="m-2" onClick={() => onUpdateTask(task.idTask)}>Modificar</Button>
+                <Button variant='danger' className="m-2" onClick={() => onDeleteTask(task.idTask)}>Eliminar</Button>
+              </div>
+            </td>
           </tr>
         ))}
       </tbody>

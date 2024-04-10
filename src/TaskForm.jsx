@@ -2,19 +2,23 @@ import React, {useEffect, useState} from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
-function TaskModal({ show, handleClose, handleAddTask }) {
+function TaskModal({ show, handleClose }) {
   const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
+  const [description, setDescription] = useState()
   const [priority, setPriority] = useState(0)
   const [userSelected, setUserSelected] = useState()
   const [users, setUsers] = useState([])
+  const [done, setDone] = useState(true)
+  const [date, setDate] = useState('')
   const [error, setError] = useState('')
 
   const postData = {
     user: userSelected,
     description,
     name,
-    priority
+    priority,
+    done,
+    date
   }
   
   useEffect(() => {
@@ -44,6 +48,8 @@ function TaskModal({ show, handleClose, handleAddTask }) {
     setDescription(0)
     setPriority('')
     setName('');
+    setDate('')
+    setDone(true)
     handleClose();
   };
 
@@ -52,6 +58,24 @@ function TaskModal({ show, handleClose, handleAddTask }) {
     try {
       const response = await fetch('http://localhost:8080/task/add', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      });
+      if (!response.ok) {
+        throw new Error('Error al agregar la tarea');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const updateTask = async (postData, id) => {
+
+    try {
+      const response = await fetch('http://localhost:8080/task?id=' + id, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -109,8 +133,15 @@ function TaskModal({ show, handleClose, handleAddTask }) {
               {users.map(user => (
                 <option key={user.idUsuarios} value={user.idUsuarios}>{user.usuario}</option>
               ))}
-              
             </Form.Select>
+
+            <Form.Label>Fecha de tarea</Form.Label>
+            <Form.Control
+              type="datetime-local"
+              placeholder="Ingrese una fecha y hora"
+              value={description}
+              onChange={(e) => setDate(e.target.value)}
+            />
           </Form.Group>
           <Button variant="primary" type="submit">
             Agregar Tarea

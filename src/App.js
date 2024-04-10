@@ -30,7 +30,10 @@ function App() {
   }, []);
 
   const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => {
+    setShowModal(false)
+    setTasks(tasks)
+  };
 
   const deleteTask = async (id) => {
     try {
