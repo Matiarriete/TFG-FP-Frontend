@@ -3,8 +3,7 @@ import { Button, Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
 function TaskModal({ show, handleClose, task }) {
-  const [updatedTask, setUpdatedTask] = useState(task)
-  const [name, setName] = useState('')
+  const [name, setName] = useState()
   const [description, setDescription] = useState()
   const [priority, setPriority] = useState(0)
   const [userSelected, setUserSelected] = useState()
@@ -91,13 +90,14 @@ function TaskModal({ show, handleClose, task }) {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
-        {console.log(updatedTask)}
+          {console.log(task)}
           <Form.Group controlId="formTaskName">
             <Form.Label>Nombre de la Tarea</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Ingrese una tarea"
-              value={name}
+              placeholder="Ingrese una tarea" 
+              value={task.name}
+              disabled
               onChange={(e) => setName(e.target.value)}
             />
 
@@ -105,7 +105,8 @@ function TaskModal({ show, handleClose, task }) {
             <Form.Control
               type="number"
               placeholder="Ingrese una prioridad"
-              value={priority}
+              value={task.priority}
+              disabled
               onChange={(e) => setPriority(e.target.value)}
             />
 
@@ -113,12 +114,13 @@ function TaskModal({ show, handleClose, task }) {
             <Form.Control
               type="text"
               placeholder="Ingrese una descripcion"
-              value={description}
+              value={task.description}
+              disabled
               onChange={(e) => setDescription(e.target.value)}
             />
 
             <Form.Label>Usuario</Form.Label>
-            <Form.Select aria-label="Default select example" onChange={handleChange} >
+            <Form.Select aria-label="Default select example" disabled onChange={handleChange} defaultValue={task.user.idUsuarios}>
               <option>Open this select menu</option>
               {users.map(user => (
                 <option key={user.idUsuarios} value={user.idUsuarios}>{user.usuario}</option>
@@ -129,12 +131,13 @@ function TaskModal({ show, handleClose, task }) {
             <Form.Control
               type="datetime-local"
               placeholder="Ingrese una fecha y hora"
-              value={date}
+              value={task.date}
+              disabled={false}
               onChange={(e) => setDate(e.target.value)}
             />
           </Form.Group>
-          <Button variant="primary" type="submit">
-            Agregar Tarea
+          <Button variant="primary">
+            Modificar Tarea
           </Button>
         </Form>
       </Modal.Body>

@@ -70,6 +70,7 @@ function App() {
       <TaskFormUpdate
         show={showModalUpdate}
         handleClose={handleCloseModal}
+        task={task}
       />
       <TaskList tasks={tasks} onDeleteTask={deleteTask} handleShowModal={handleShowModalUpdate}/>
     </div>
