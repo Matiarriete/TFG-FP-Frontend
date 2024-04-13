@@ -2,25 +2,24 @@ import React, {useEffect, useState} from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
-function TaskModal({ show, handleClose }) {
+function TaskModal({ show, handleClose, task }) {
+  const [updatedTask, setUpdatedTask] = useState(task)
   const [name, setName] = useState('')
   const [description, setDescription] = useState()
   const [priority, setPriority] = useState(0)
   const [userSelected, setUserSelected] = useState()
   const [users, setUsers] = useState([])
-  const [done, setDone] = useState(true)
   const [date, setDate] = useState('')
   const [error, setError] = useState('')
 
-  const postData = {
+  const putData = {
     user: userSelected,
     description,
     name,
     priority,
-    done,
     date
   }
-  
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -40,38 +39,7 @@ function TaskModal({ show, handleClose }) {
     fetchUsers();
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!name.trim() || !description.trim()) return;
-    addTask(postData)
-    setUserSelected()
-    setDescription(0)
-    setPriority('')
-    setName('');
-    setDate('')
-    setDone(true)
-    handleClose();
-  };
-
-  const addTask = async (postData) => {
-
-    try {
-      const response = await fetch('http://localhost:8080/task/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(postData),
-      });
-      if (!response.ok) {
-        throw new Error('Error al agregar la tarea');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-  const updateTask = async (postData, id) => {
+  const updateTask = async (putData, id) => {
 
     try {
       const response = await fetch('http://localhost:8080/task?id=' + id, {
@@ -79,7 +47,7 @@ function TaskModal({ show, handleClose }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(postData),
+        body: JSON.stringify(putData),
       });
       if (!response.ok) {
         throw new Error('Error al agregar la tarea');
@@ -87,6 +55,27 @@ function TaskModal({ show, handleClose }) {
     } catch (error) {
       console.error('Error:', error);
     }
+  };
+
+  const closeTab = (e) => {
+    setUserSelected()
+    setDescription('')
+    setPriority(0)
+    setName('')
+    setDate('')
+    handleClose()
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!name.trim() || !description.trim()) return;
+    updateTask(putData)
+    setUserSelected()
+    setDescription('')
+    setPriority(0)
+    setName('');
+    setDate('')
+    handleClose()
   };
 
   const handleChange = (e) => {
@@ -96,12 +85,13 @@ function TaskModal({ show, handleClose }) {
   }
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={closeTab}>
       <Modal.Header closeButton>
-        <Modal.Title>Agregar Tarea</Modal.Title>
+        <Modal.Title>Modificar Tarea</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
+        {console.log(updatedTask)}
           <Form.Group controlId="formTaskName">
             <Form.Label>Nombre de la Tarea</Form.Label>
             <Form.Control
@@ -139,7 +129,7 @@ function TaskModal({ show, handleClose }) {
             <Form.Control
               type="datetime-local"
               placeholder="Ingrese una fecha y hora"
-              value={description}
+              value={date}
               onChange={(e) => setDate(e.target.value)}
             />
           </Form.Group>

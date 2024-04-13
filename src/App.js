@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {Button} from 'react-bootstrap'
-import TaskForm from './TaskForm';
+import TaskFormAdd from './TaskFormAdd';
+import TaskFormUpdate from './TaskFormUpdate';
 import TaskList from './TaskList';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css'
 
 function App() {
-  const [tasks, setTasks] = useState([]);
-  const [showModal, setShowModal] = useState(false)
-  const [error, setError] = useState(null);
+  const [tasks, setTasks] = useState([])
+  const [task, setTask] = useState(null)
+  const [showModalAdd, setShowModalAdd] = useState(false)
+  const [showModalUpdate, setShowModalUpdate] = useState(false)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -29,9 +32,14 @@ function App() {
     fetchTasks();
   }, []);
 
-  const handleShowModal = () => setShowModal(true);
+  const handleShowModalAdd = () => setShowModalAdd(true);
+  const handleShowModalUpdate = (taskToUpdate) => {
+    setShowModalUpdate(true)
+    setTask(taskToUpdate)
+  }
   const handleCloseModal = () => {
-    setShowModal(false)
+    setShowModalAdd(false)
+    setShowModalUpdate(false)
     setTasks(tasks)
   };
 
@@ -43,7 +51,6 @@ function App() {
       if (!response.ok) {
         throw new Error('Error al eliminar la tarea');
       }
-      const data = await response;
       setTasks(tasks.filter(task => task.idTask !== id));
     } catch (error) {
       console.error('Error:', error);
@@ -53,14 +60,18 @@ function App() {
   return (
     <div className="App">
       <h1>Administrador de Tareas</h1>
-      <Button variant="primary" onClick={handleShowModal}>
+      <Button variant="primary" onClick={handleShowModalAdd}>
         Agregar Tarea
       </Button>
-      <TaskForm
-        show={showModal}
+      <TaskFormAdd
+        show={showModalAdd}
         handleClose={handleCloseModal}
       />
-      <TaskList tasks={tasks} onDeleteTask={deleteTask} />
+      <TaskFormUpdate
+        show={showModalUpdate}
+        handleClose={handleCloseModal}
+      />
+      <TaskList tasks={tasks} onDeleteTask={deleteTask} handleShowModal={handleShowModalUpdate}/>
     </div>
   );
 }
