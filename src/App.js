@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {Button} from 'react-bootstrap'
 import TaskFormAdd from './TaskFormAdd';
-import TaskFormUpdate from './TaskFormUpdate';
 import TaskList from './TaskList';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css'
 
 function App() {
   const [tasks, setTasks] = useState([])
-  const [task, setTask] = useState(null)
   const [showModalAdd, setShowModalAdd] = useState(false)
-  const [showModalUpdate, setShowModalUpdate] = useState(false)
+  const [modalUpdateData, setModalUpdateData] = useState(null)
   const [error, setError] = useState(null)
 
   useEffect(() => {
@@ -33,13 +31,9 @@ function App() {
   }, []);
 
   const handleShowModalAdd = () => setShowModalAdd(true);
-  const handleShowModalUpdate = (taskToUpdate) => {
-    setShowModalUpdate(true)
-    setTask(taskToUpdate)
-  }
+
   const handleCloseModal = () => {
     setShowModalAdd(false)
-    setShowModalUpdate(false)
     setTasks(tasks)
   };
 
@@ -67,12 +61,7 @@ function App() {
         show={showModalAdd}
         handleClose={handleCloseModal}
       />
-      <TaskFormUpdate
-        show={showModalUpdate}
-        handleClose={handleCloseModal}
-        task={task}
-      />
-      <TaskList tasks={tasks} onDeleteTask={deleteTask} handleShowModal={handleShowModalUpdate}/>
+      <TaskList tasks={tasks} onDeleteTask={deleteTask} setModalUpdateData={setModalUpdateData}/>
     </div>
   );
 }
