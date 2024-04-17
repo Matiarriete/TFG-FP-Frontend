@@ -2,24 +2,32 @@ import React, {useEffect, useState} from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
-function TaskModal({ show, handleClose }) {
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState()
-  const [priority, setPriority] = useState(0)
-  const [userSelected, setUserSelected] = useState()
-  const [users, setUsers] = useState([])
-  const [date, setDate] = useState('')
-  const [error, setError] = useState('')
+function TaskModal({ show, handleClose, task, setTask }) {
 
-  const postData = {
-    user: userSelected,
-    description,
-    name,
-    priority,
-    date
+  const initailForm = {
+    description: "",
+    name: "",
+    priority: 0,
+    user: {
+      idUsuarios: 0,
+      usuario: "",
+      email: "" 
+    },
+    date: 0
   }
+  const [form, setForm] = useState(initailForm)
+  
+  const [users, setUsers] = useState([])
+  const [error, setError] = useState('')
   
   useEffect(() => {
+
+    if (task) {
+      setForm(task);
+    } else {
+      setForm(initailForm);
+    }
+
     const fetchUsers = async () => {
       try {
         const response = await fetch('http://localhost:8080/usuarios');
@@ -36,32 +44,22 @@ function TaskModal({ show, handleClose }) {
     };
 
     fetchUsers();
-  }, []);
+  }, [task]);
 
 
   const closeTab = (e) => {
-    setUserSelected()
-    setDescription('')
-    setPriority(0)
-    setName('');
-    setDate('')
+    setForm(initailForm)
     handleClose();
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name.trim() || !description.trim()) return;
-    addTask(postData)
-    setUserSelected()
-    setDescription('')
-    setPriority(0)
-    setName('')
-    setDate('')
+    addTask(form)
     handleClose()
   };
 
   const addTask = async (postData) => {
-
+    console.log(postData)
     try {
       const response = await fetch('http://localhost:8080/task/add', {
         method: 'POST',
@@ -71,7 +69,7 @@ function TaskModal({ show, handleClose }) {
         body: JSON.stringify(postData),
       });
       if (!response.ok) {
-        throw new Error('Error al agregar la tarea');
+        throw new Error(response.json());
       }
     } catch (error) {
       console.error('Error:', error);
@@ -79,9 +77,19 @@ function TaskModal({ show, handleClose }) {
   };
 
   const handleChange = (e) => {
-    const userId = e.target.value
-    const selectedUser = users.find(user => user.idUsuarios == userId);
-    setUserSelected(selectedUser)
+    if([e.target.name] == "user") {
+      const userId = e.target.value
+      const selectedUser = users.find(user => user.idUsuarios == userId);
+      setForm({
+        ...form,
+        [e.target.name]: selectedUser
+      })
+    } else {
+      setForm({
+        ...form,
+        [e.target.name]: e.target.value
+      })
+    }
   }
 
   return (
@@ -95,29 +103,32 @@ function TaskModal({ show, handleClose }) {
             <Form.Label>Nombre de la Tarea</Form.Label>
             <Form.Control
               type="text"
+              name="name"
               placeholder="Ingrese una tarea"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={form.name}
+              onChange={handleChange}
             />
 
             <Form.Label>Nombre de la Prioridad</Form.Label>
             <Form.Control
               type="number"
+              name="priority"
               placeholder="Ingrese una prioridad"
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
+              value={form.priority}
+              onChange={handleChange}
             />
 
             <Form.Label>Nombre de la descripcion</Form.Label>
             <Form.Control
               type="text"
+              name="description"
               placeholder="Ingrese una descripcion"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={form.description}
+              onChange={handleChange}
             />
 
             <Form.Label>Usuario</Form.Label>
-            <Form.Select aria-label="Default select example" onChange={handleChange} >
+            <Form.Select aria-label="Default select example" name="user" onChange={handleChange} defaultValue={form.user.idUsuarios}>
               <option>Open this select menu</option>
               {users.map(user => (
                 <option key={user.idUsuarios} value={user.idUsuarios}>{user.usuario}</option>
@@ -127,9 +138,10 @@ function TaskModal({ show, handleClose }) {
             <Form.Label>Fecha de tarea</Form.Label>
             <Form.Control
               type="datetime-local"
+              name="date"
               placeholder="Ingrese una fecha y hora"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              value={form.date}
+              onChange={handleChange}
             />
           </Form.Group>
           <Button variant="primary" type="submit">

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {Button} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.css';
 
-function TaskList({ tasks, onDeleteTask, setModalUpdateData}) {
+function TaskList({ tasks, onDeleteTask, setModalUpdateData, handleShowModalAdd}) {
 
   return (
     <table>
@@ -24,7 +24,7 @@ function TaskList({ tasks, onDeleteTask, setModalUpdateData}) {
             <td>{task.user.usuario}</td>
             <td>
               <div>
-                <Button className="m-2" onClick={() => setModalUpdateData(task)}>Modificar</Button>
+                <Button className="m-2" onClick={() => {setModalUpdateData(task); handleShowModalAdd()}}>Modificar</Button>
                 <Button variant='danger' className="m-2" onClick={() => onDeleteTask(task.idTask)}>Eliminar</Button>
               </div>
             </td>
