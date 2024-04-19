@@ -2,3 +2,10 @@
 td{
   padding: 15px;
 }
+
+tr{
+  background-color: brown;
+  height: 30px;
+  border: 15px white solid;
+  border-radius: 100px;
+}

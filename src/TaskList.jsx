@@ -1,8 +1,45 @@
 import React, { useState } from 'react';
 import {Button} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.css';
+import { useEffect } from 'react';
 
-function TaskList({ tasks, onDeleteTask, setModalUpdateData, handleShowModalAdd}) {
+function TaskList({ setModalUpdateData, handleShowModalAdd}) {
+
+  const [tasks, setTasks] = useState([])
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/task');
+        if (!response.ok) {
+          throw new Error('Error al obtener las tareas');
+        }
+        const data = await response.json(); 
+        setTasks(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchTasks();
+  }, [tasks]);
+
+  const deleteTask = async (id) => {
+    try {
+      const response = await fetch('http://localhost:8080/task?id=' + id, {
+        method: 'DELETE'
+      });
+      if (!response.ok) {
+        throw new Error('Error al eliminar la tarea');
+      }
+      setTasks(tasks.filter(task => task.idTask !== id));
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <table>
@@ -25,7 +62,7 @@ function TaskList({ tasks, onDeleteTask, setModalUpdateData, handleShowModalAdd}
             <td>
               <div>
                 <Button className="m-2" onClick={() => {setModalUpdateData(task); handleShowModalAdd()}}>Modificar</Button>
-                <Button variant='danger' className="m-2" onClick={() => onDeleteTask(task.idTask)}>Eliminar</Button>
+                <Button variant='danger' className="m-2" onClick={() => deleteTask(task.idTask)}>Eliminar</Button>
               </div>
             </td>
           </tr>
