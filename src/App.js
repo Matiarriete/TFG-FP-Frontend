@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Button} from 'react-bootstrap'
-import TaskFormAdd from './TaskFormAdd';
+import TaskForm from './TaskForm';
 import TaskList from './TaskList';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css'
@@ -22,7 +22,7 @@ function App() {
       <Button variant="primary" onClick={handleShowModalAdd}>
         Agregar Tarea
       </Button>
-      <TaskFormAdd
+      <TaskForm
         show={showModalAdd}
         handleClose={handleCloseModal}
         task={modalUpdateData}

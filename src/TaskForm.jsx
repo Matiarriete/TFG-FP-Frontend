@@ -18,11 +18,15 @@ function TaskModal({ show, handleClose, task, setTask }) {
   const [form, setForm] = useState(initailForm)
   
   const [users, setUsers] = useState([])
+  const [disabled, setDisabled] = useState(false)
+  const [buttonText, setButtonText] = useState("Agregar")
   const [error, setError] = useState('')
   
   useEffect(() => {
 
     if (task) {
+      setDisabled(true)
+      setButtonText("Modificar")
       setForm(task);
     } else {
       setForm(initailForm);
@@ -49,12 +53,16 @@ function TaskModal({ show, handleClose, task, setTask }) {
 
   const closeTab = (e) => {
     setForm(initailForm)
+    setDisabled(false)
+    setButtonText("Agregar")
     handleClose();
   }
 
-  const handleSubmit = (e) => {
+  const handleClick = (e) => {
     e.preventDefault();
-    addTask(form)
+    if(buttonText === "Agregar") addTask(form)
+    else modifyTask(form)
+    closeTab()
     handleClose()
   };
 
@@ -66,6 +74,23 @@ function TaskModal({ show, handleClose, task, setTask }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(postData),
+      });
+      if (!response.ok) {
+        throw new Error(response.json());
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const modifyTask = async (putData) => {
+    try {
+      const response = await fetch('http://localhost:8080/task', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(putData),
       });
       if (!response.ok) {
         throw new Error(response.json());
@@ -97,12 +122,13 @@ function TaskModal({ show, handleClose, task, setTask }) {
         <Modal.Title>Agregar Tarea</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit}>
+        <Form>
           <Form.Group controlId="formTaskName">
             <Form.Label>Nombre de la Tarea</Form.Label>
             <Form.Control
               type="text"
               name="name"
+              disabled={disabled}
               placeholder="Ingrese una tarea"
               value={form.name}
               onChange={handleChange}
@@ -113,6 +139,7 @@ function TaskModal({ show, handleClose, task, setTask }) {
               type="number"
               name="priority"
               placeholder="Ingrese una prioridad"
+              disabled={disabled}
               value={form.priority}
               onChange={handleChange}
             />
@@ -122,12 +149,13 @@ function TaskModal({ show, handleClose, task, setTask }) {
               type="text"
               name="description"
               placeholder="Ingrese una descripcion"
+              disabled={disabled}
               value={form.description}
               onChange={handleChange}
             />
 
             <Form.Label>Usuario</Form.Label>
-            <Form.Select aria-label="Default select example" name="user" onChange={handleChange} defaultValue={form.user.idUsuarios}>
+            <Form.Select aria-label="Default select example" name="user" onChange={handleChange} disabled={disabled} defaultValue={form.user.idUsuarios}>
               <option>Open this select menu</option>
               {users.map(user => (
                 <option key={user.idUsuarios} value={user.idUsuarios}>{user.usuario}</option>
@@ -139,12 +167,13 @@ function TaskModal({ show, handleClose, task, setTask }) {
               type="datetime-local"
               name="date"
               placeholder="Ingrese una fecha y hora"
+              disabled={disabled}
               value={form.date}
               onChange={handleChange}
             />
           </Form.Group>
-          <Button variant="primary" type="submit">
-            Agregar Tarea
+          <Button variant="primary" onClick={handleClick}>
+            {buttonText}
           </Button>
         </Form>
       </Modal.Body>

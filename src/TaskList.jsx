@@ -27,6 +27,22 @@ function TaskList({ setModalUpdateData, handleShowModalAdd}) {
     fetchTasks();
   }, [tasks]);
 
+  const markAsDone = async (id) => {
+    try {
+      const response = await fetch('http://localhost:8080/task?id=' + id, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      if (!response.ok) {
+        throw new Error(response.json());
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   const deleteTask = async (id) => {
     try {
       const response = await fetch('http://localhost:8080/task?id=' + id, {
@@ -45,6 +61,7 @@ function TaskList({ setModalUpdateData, handleShowModalAdd}) {
     <table>
       <thead>
         <tr>
+          <td>Done</td>
           <td>Nombre</td>
           <td>Descripcion</td>
           <td>Prioridad</td>
@@ -55,6 +72,7 @@ function TaskList({ setModalUpdateData, handleShowModalAdd}) {
       <tbody>
         {tasks.map(task => (
           <tr key={task.idTask}>
+            <td><div><input type="checkbox" name={task.name} id={task.idTask} checked={task.done} onClick={() => markAsDone(task.idTask)} /></div></td>
             <td>{task.name}</td>
             <td>{task.description}</td>
             <td>{task.priority}</td>
