@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -11,21 +11,21 @@ function TaskModal({ show, handleClose, task, setTask }) {
     user: {
       idUsuarios: 0,
       usuario: "",
-      email: "" 
+      email: ""
     },
     date: 0
   }
   const [form, setForm] = useState(initailForm)
-  
+
   const [users, setUsers] = useState([])
   const [disabled, setDisabled] = useState(false)
   const [buttonText, setButtonText] = useState("Agregar")
   const [error, setError] = useState('')
-  
+
   useEffect(() => {
 
     if (task) {
-      setDisabled(true)
+      // setDisabled(true)
       setButtonText("Modificar")
       setForm(task);
     } else {
@@ -60,8 +60,8 @@ function TaskModal({ show, handleClose, task, setTask }) {
 
   const handleClick = (e) => {
     e.preventDefault();
-    if(buttonText === "Agregar") addTask(form)
-    else modifyTask(form)
+    if (buttonText === "Agregar") addTask(form)
+    else modifyTask(form.idTask, form)
     closeTab()
     handleClose()
   };
@@ -83,9 +83,9 @@ function TaskModal({ show, handleClose, task, setTask }) {
     }
   };
 
-  const modifyTask = async (putData) => {
+  const modifyTask = async (id, putData) => {
     try {
-      const response = await fetch('http://localhost:8080/task', {
+      const response = await fetch('http://localhost:8080/task/update?id=' + id, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ function TaskModal({ show, handleClose, task, setTask }) {
   };
 
   const handleChange = (e) => {
-    if([e.target.name] == "user") {
+    if ([e.target.name] == "user") {
       const userId = e.target.value
       const selectedUser = users.find(user => user.idUsuarios == userId);
       setForm({
@@ -134,17 +134,7 @@ function TaskModal({ show, handleClose, task, setTask }) {
               onChange={handleChange}
             />
 
-            <Form.Label>Nombre de la Prioridad</Form.Label>
-            <Form.Control
-              type="number"
-              name="priority"
-              placeholder="Ingrese una prioridad"
-              disabled={disabled}
-              value={form.priority}
-              onChange={handleChange}
-            />
-
-            <Form.Label>Nombre de la descripcion</Form.Label>
+            <Form.Label>Descripcion de la tarea</Form.Label>
             <Form.Control
               type="text"
               name="description"
@@ -154,15 +144,22 @@ function TaskModal({ show, handleClose, task, setTask }) {
               onChange={handleChange}
             />
 
-            <Form.Label>Usuario</Form.Label>
-            <Form.Select aria-label="Default select example" name="user" onChange={handleChange} disabled={disabled} defaultValue={form.user.idUsuarios}>
+            <Form.Label>Prioridad de la tarea</Form.Label>
+            <Form.Select disabled={disabled} value={form.priority} name="priority" onChange={handleChange}>
+              <option value={1}>High</option>
+              <option value={2}>Medium</option>
+              <option value={3}>Low</option>
+            </Form.Select>
+
+            <Form.Label>Responsable de la tarea</Form.Label>
+            <Form.Select aria-label="Default select example" name="user" onChange={handleChange} disabled={disabled} value={form.user.idUsuarios}>
               <option>Open this select menu</option>
               {users.map(user => (
                 <option key={user.idUsuarios} value={user.idUsuarios}>{user.usuario}</option>
               ))}
             </Form.Select>
 
-            <Form.Label>Fecha de tarea</Form.Label>
+            <Form.Label>Fecha de la tarea</Form.Label>
             <Form.Control
               type="datetime-local"
               name="date"

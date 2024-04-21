@@ -71,11 +71,11 @@ function TaskList({ setModalUpdateData, handleShowModalAdd}) {
       </thead>
       <tbody>
         {tasks.map(task => (
-          <tr key={task.idTask}>
+          <tr key={task.idTask} style={{backgroundColor: task.done === true ? "#63BE4B" : "#BF4930"}}>
             <td><div><input type="checkbox" name={task.name} id={task.idTask} checked={task.done} onClick={() => markAsDone(task.idTask)} /></div></td>
             <td>{task.name}</td>
             <td>{task.description}</td>
-            <td>{task.priority}</td>
+            <td>{task.priority == 1 ? "High" : task.priority == 2 ? "Medium" : "Low"}</td>
             <td>{task.user.usuario}</td>
             <td>
               <div>
