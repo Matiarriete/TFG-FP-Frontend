@@ -6,3 +6,8 @@ td{
 tbody{
   width: 115px
 }
+
+#progreso{
+  background-color: cadetblue;
+  border-radius: 22px;
+}

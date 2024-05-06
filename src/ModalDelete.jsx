@@ -26,7 +26,7 @@ function ModalDelete({handleClose, show, modalDeleteData, setReloadData}) {
     
     const deleteTask = async (id) => {
         try {
-          const response = await fetch('http://localhost:8080/task?id=' + id, {
+          const response = await fetch('https://backend-tfg-38792dd679ce.herokuapp.com/task?id=' + id, {
             method: 'DELETE'
           });
           if (!response.ok) {

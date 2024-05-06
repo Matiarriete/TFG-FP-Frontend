@@ -27,7 +27,7 @@ function App() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:8080/usuarios');
+        const response = await fetch('https://backend-tfg-38792dd679ce.herokuapp.com/usuarios');
         if (!response.ok) {
           throw new Error('Error al obtener los usuario');
         }
