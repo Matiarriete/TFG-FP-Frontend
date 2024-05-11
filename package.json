@@ -7,6 +7,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.3.3",
+    "node-sass": "^7.0.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
@@ -36,6 +37,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ],
-    "proxy": "http://localhost:8080"
+    "proxy": [
+      "http://localhost:8080",
+      "https://backend-tfg-38792dd679ce.herokuapp.com/"
+  ]
   }
 }
