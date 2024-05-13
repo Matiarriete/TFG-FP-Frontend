@@ -10,7 +10,9 @@ tbody{
   width: 115px
 }
 
-
+p{
+  text-align: center;
+}
 /* Clases */
 .red{
   display: block;

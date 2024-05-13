@@ -220,6 +220,7 @@ function TaskList({ setModalData, handleShowModalAdd, handleShowModalDelete, rel
         </tbody>
 
       </Table>
+      {tasks.length == 0 ? <p>No se encontraron resultados</p> : null}
     </div>
   );
 }

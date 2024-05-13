@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import Login from './Componentes/Login';
 import Perfil from './Componentes/Perfil';
+import PageNotFound from './Componentes/PageNotFound';
 import {createBrowserRouter, RouterProvider,} from "react-router-dom";
 import {Auth0Provider} from "@auth0/auth0-react"
 import reportWebVitals from './reportWebVitals';
@@ -16,7 +17,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login/>
+    element: <Login/>,
+    errorElement: <PageNotFound/>
   },{
     path: "/Dashboard",
     element: <App/>
