@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap');
+
+/*Componentes */
 
 td{
   padding: 15px;
@@ -7,7 +10,59 @@ tbody{
   width: 115px
 }
 
+
+/* Clases */
+.red{
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: .875rem;
+  color: #d9534f;
+}
+
+.red_border{
+  border: 1px solid #dc3545;
+}
+
+.doneClass{
+  background-color: #BFF6C3;
+  color: black;
+}
+
+.noDoneClass{
+  background-color: #FDE49E;
+  color: black;
+}
+
+.constrText{
+  font-family: "Syne", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  text-align: center;
+}
+
+
+/* Ids */
 #progreso{
   background-color: cadetblue;
   border-radius: 22px;
+}
+
+#dropdown-basic{
+  background-color: #5f9ea0;
+  border: 0px;
+}
+
+#profileImage{
+  height: 30px;
+}
+
+#imgCol{
+  height: 150px;
+}
+
+#buttonVolverPri{
+  align-items: center;
+  justify-content: center;
 }

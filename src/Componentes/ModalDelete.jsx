@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function ModalDelete({handleClose, show, modalDeleteData, setReloadData}) {
+function ModalDelete({handleClose, show, modalData, setReloadData}) {
 
     useEffect(() => {
-        if (modalDeleteData) {
-            setForm(modalDeleteData);
+        if (modalData) {
+            setForm(modalData);
         }
-    }, [modalDeleteData])
+    }, [modalData])
 
     const initailForm = {
         idTask: 0,
