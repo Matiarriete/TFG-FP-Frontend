@@ -24,7 +24,7 @@ function PageNotFound() {
             />
             <h1 class="constrText">Pagina no existe</h1>
             <h3 class="constrText">La pagina que esta buscando no existe. Ingrese correctamente la direccion</h3>
-            <Button onClick={() => window.location.href = '/Dashboard'}>Volver a pagina principal</Button>
+            <Button onClick={() => window.location.href = '/'}>Volver a pagina principal</Button>
         </div>
     )
 }

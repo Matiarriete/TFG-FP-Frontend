@@ -68,3 +68,7 @@ p{
   align-items: center;
   justify-content: center;
 }
+
+.container-spinner{
+  height: 100vh;
+}

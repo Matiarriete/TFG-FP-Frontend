@@ -38,6 +38,10 @@ function Dashboard({user}) {
       };
 
       useEffect(() => {
+        localStorage.setItem('nickname', user.nickname)
+        localStorage.setItem('picture', user.picture)
+        localStorage.setItem('email', user.email)
+        console.log(user)
         fetchUsers()
       }, [])
 

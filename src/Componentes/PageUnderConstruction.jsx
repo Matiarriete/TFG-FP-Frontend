@@ -24,7 +24,7 @@ function PageUnderConstruction() {
             />
             <h1 class="constrText">Pagina en construcción</h1>
             <h3 class="constrText">Disculpe, nos encontramos haciendo mejoras en esta pagina</h3>
-            <Button onClick={() => window.location.href = '/Dashboard'}>Volver a pagina principal</Button>
+            <Button onClick={() => window.location.href = '/'}>Volver a pagina principal</Button>
         </div>
     )
 }

@@ -1,29 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import Login from './Componentes/Login';
-import Perfil from './Componentes/Perfil';
-import PageNotFound from './Componentes/PageNotFound';
 import {createBrowserRouter, RouterProvider,} from "react-router-dom";
 import {Auth0Provider} from "@auth0/auth0-react"
 import reportWebVitals from './reportWebVitals';
+import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import '../src/App.css'
+import App from './App';
+import Perfil from './Componentes/Perfil';
+import PageNotFound from './Componentes/PageNotFound';
 import PageUnderConstruction from './Componentes/PageUnderConstruction';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const router = createBrowserRouter([
-  {
+ {
     path: "/",
-    element: <Login/>,
+    element: <App/>,
     errorElement: <PageNotFound/>
   },{
-    path: "/Dashboard",
-    element: <App/>
-  },{
-    path: "/Perfil/:email",
+    path: "/Perfil",
     element: <PageUnderConstruction/>
   }
 ]);
