@@ -20,7 +20,7 @@ const router = createBrowserRouter([
     errorElement: <PageNotFound/>
   },{
     path: "/Perfil",
-    element: <PageUnderConstruction/>
+    element: <Perfil/>
   }
 ]);
 

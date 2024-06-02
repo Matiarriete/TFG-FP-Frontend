@@ -4,11 +4,13 @@ import { useAuth0 } from '@auth0/auth0-react';
 import TaskForm from './TaskForm';
 import TaskList from './TaskList';
 import ModalDelete from './ModalDelete';
+import Perfil from './Perfil';
 import 'bootstrap/dist/css/bootstrap.css';
 
 function Dashboard({user}) {
     const [showModalAdd, setShowModalAdd] = useState(false)
     const [showModalDelete, setShowModalDelete] = useState(false)
+    const [showModalProfile, setShowModalProfile] = useState(false)
     const [modalData, setModalData] = useState(null)
     const [error, setError] = useState(null)
     const [users, setUsers] = useState([])
@@ -17,10 +19,12 @@ function Dashboard({user}) {
 
     const handleShowModalAdd = () => setShowModalAdd(true);
     const handleShowModalDelete = () => setShowModalDelete(true);
+    const handleShowModalProfile = () => setShowModalProfile(true);
 
     const handleCloseModal = () => {
         setShowModalAdd(false)
         setShowModalDelete(false)
+        setShowModalProfile(false)
         setReloadData(false)
     }
 
@@ -35,15 +39,15 @@ function Dashboard({user}) {
         } catch (error) {
           setError(error);
         }
-      };
+    };
 
-      useEffect(() => {
+    useEffect(() => {
         localStorage.setItem('nickname', user.nickname)
         localStorage.setItem('picture', user.picture)
         localStorage.setItem('email', user.email)
         console.log(user)
         fetchUsers()
-      }, [])
+    }, [])
 
     return (
         isAuthenticated && (
@@ -56,7 +60,7 @@ function Dashboard({user}) {
                             {"  " + user.nickname + "  "}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item href={"/Perfil/" + user.email}>Ver perfil</Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleShowModalProfile()}>Ver perfil</Dropdown.Item>
                             <Dropdown.Item onClick={() => logout()}>Cerrar Sesion</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
@@ -85,6 +89,10 @@ function Dashboard({user}) {
                     show={showModalDelete}
                     modalData={modalData}
                     users={users} />
+
+                <Perfil
+                    handleClose={handleCloseModal}
+                    show={showModalProfile} />
             </div>
         )
     );

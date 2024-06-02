@@ -199,7 +199,7 @@ function TaskModal({ show, handleClose, task, setTask, users }) {
               {errors.date}
             </Form.Control.Feedback>
           </Form.Group>
-          <Button className={form.done ? 'invisible' : ''} type='submit' variant="primary" onClick={handleSubmit}>
+          <Button className={form.done ? 'invisible' : '' + "mt-3"} type='submit' variant="primary" onClick={handleSubmit}>
             {buttonText}
           </Button>
         </Form>
