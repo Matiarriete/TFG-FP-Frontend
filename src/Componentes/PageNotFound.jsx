@@ -1,7 +1,7 @@
 import React from "react";
 import Lottie from 'react-lottie'
 import { Button } from 'react-bootstrap'
-import animationData from '../lotties/construction.json';
+import animationData from '../lotties/notFound.json';
 
 function PageNotFound() {
 

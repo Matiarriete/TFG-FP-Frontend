@@ -40,7 +40,7 @@ function ModalDelete({handleClose, show, modalData, setReloadData}) {
     return (    
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                <Modal.Title>Borrar Tarea</Modal.Title>
             </Modal.Header>
             <Modal.Body>Usted esta por eliminar la tarea: {form.name}. Seguro desea hacerlo?</Modal.Body>
             <Modal.Footer>
